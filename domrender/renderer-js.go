@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"sync"
@@ -329,8 +330,19 @@ func (r *JSRenderer) render(buildResults *vugu.BuildResults) error {
 		return err
 	}
 
-	// // JS stuff last
-	// // log.Printf("TODO: handle JS")
+	// JS stuff last
+	log.Printf("TODO: handle JS")
+	// Minimal JS handling: only script with src at top level.
+	for _, js := range bo.JS {
+		for _, attr := range js.Attr {
+			if attr.Key == "src" {
+				err := r.instructionList.writeSetJSTag(attr.Val)
+				if err != nil {
+					return err
+				}
+			}
+		}
+	}
 
 	err = r.instructionList.flush()
 	if err != nil {

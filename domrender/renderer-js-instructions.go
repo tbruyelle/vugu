@@ -420,6 +420,25 @@ func (il *instructionList) writeRemoveOtherCSSTags() error {
 	return nil
 }
 
+func (il *instructionList) writeSetJSTag(src string) error {
+	err := il.checkLenAndFlush(5 + len(src))
+	if err != nil {
+		return err
+	}
+	il.writeValUint8(opcodeSetJSTag)
+	il.writeValString(src)
+	return nil
+}
+
+func (il *instructionList) writeRemoveOtherJSTags() error {
+	err := il.checkLenAndFlush(1)
+	if err != nil {
+		return err
+	}
+	il.writeValUint8(opcodeRemoveOtherJSTags)
+	return nil
+}
+
 func (il *instructionList) writeSetProperty(key string, jsonValue []byte) error {
 
 	size := len(key) + len(jsonValue) + 9
